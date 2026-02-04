@@ -246,6 +246,15 @@ function mostrarDetalhes(event) {
                     <p class="text-gray-900">${event.extendedProps.cpf || 'N/A'}</p>
                 </div>
             </div>
+
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        <i class="fas fa-user-check mr-1"></i>Atendente Responsável
+                    </label>
+                    <p class="text-gray-900">${event.extendedProps.atendente || 'Não informado'}</p>
+                </div>
+            </div>
             
             ${event.extendedProps.urgente ? `
                 <div class="bg-red-100 border-l-4 border-red-600 p-3 rounded">

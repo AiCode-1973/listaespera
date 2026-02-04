@@ -93,6 +93,7 @@ try {
                 'urgente' => (bool)$reg['urgente'],
                 'motivoUrgencia' => $reg['motivo_urgencia'] ?? '',
                 'observacoes' => $reg['observacoes'] ?? '',
+                'atendente' => $reg['usuario_agendamento_nome'] ?: ($reg['agendado_por'] ?: $reg['usuario_criacao_nome']),
                 'dataFormatada' => $dataFormatada,
                 'tooltip' => $tooltip
             ]
