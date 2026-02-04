@@ -161,7 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'tipo_atendimento' => $_POST['tipo_atendimento'] ?? null,
             'guia_autorizada' => $requerGuia ? ($_POST['guia_autorizada'] ?? null) : null,
             'data_autorizacao_guia' => ($requerGuia && isset($_POST['guia_autorizada']) && $_POST['guia_autorizada'] == '1' && !empty($_POST['data_autorizacao_guia'])) ? converterDataBanco($_POST['data_autorizacao_guia']) : null,
-            'observacao_guia' => $requerGuia ? ($_POST['observacao_guia'] ?? null) : null
+            'observacao_guia' => $requerGuia ? ($_POST['observacao_guia'] ?? null) : null,
+            'usuario_id' => $usuarioLogado['id']
         ];
         
         // Verifica duplicidade

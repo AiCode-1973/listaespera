@@ -413,15 +413,15 @@ $pageTitle = 'Lista de Espera';
                             <?php endif; ?>
                         </td>
                         <td class="px-2 py-2 text-sm">
-                            <?php if ($reg['agendado'] && !empty($reg['usuario_agendamento_nome'])): ?>
+                            <?php 
+                            // Prioridade: Nome de quem agendou -> Nome de quem cadastrou -> Texto de agendamento manual -> "-"
+                            $atendenteNome = $reg['usuario_agendamento_nome'] ?: ($reg['usuario_criacao_nome'] ?: $reg['agendado_por']);
+                            
+                            if ($atendenteNome): 
+                            ?>
                             <div class="flex items-center">
-                                <i class="fas fa-user-circle text-blue-600 mr-1"></i>
-                                <span class="text-gray-700 font-medium"><?php echo htmlspecialchars($reg['usuario_agendamento_nome']); ?></span>
-                            </div>
-                            <?php elseif ($reg['agendado'] && !empty($reg['agendado_por'])): ?>
-                            <div class="flex items-center">
-                                <i class="fas fa-user text-gray-500 mr-1"></i>
-                                <span class="text-gray-600 text-xs"><?php echo htmlspecialchars($reg['agendado_por']); ?></span>
+                                <i class="fas <?php echo $reg['agendado'] ? 'fa-user-check text-green-600' : 'fa-user-edit text-blue-600'; ?> mr-1"></i>
+                                <span class="text-gray-700 font-medium"><?php echo htmlspecialchars($atendenteNome); ?></span>
                             </div>
                             <?php else: ?>
                             <span class="text-gray-400 text-xs">-</span>

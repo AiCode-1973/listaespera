@@ -24,14 +24,16 @@ class FilaEspera {
                          e.nome as especialidade_nome, 
                          e.cor as especialidade_cor,
                          c.nome as convenio_nome,
-                         c.cor as convenio_cor,
-                         u.nome as usuario_agendamento_nome
-                  FROM " . $this->table . " f
-                  LEFT JOIN medicos m ON f.medico_id = m.id
-                  INNER JOIN especialidades e ON f.especialidade_id = e.id
-                  LEFT JOIN convenios c ON f.convenio_id = c.id
-                  LEFT JOIN usuarios u ON f.usuario_agendamento_id = u.id
-                  WHERE 1=1";
+                          c.cor as convenio_cor,
+                          u.nome as usuario_agendamento_nome,
+                          uc.nome as usuario_criacao_nome
+                   FROM " . $this->table . " f
+                   LEFT JOIN medicos m ON f.medico_id = m.id
+                   INNER JOIN especialidades e ON f.especialidade_id = e.id
+                   LEFT JOIN convenios c ON f.convenio_id = c.id
+                   LEFT JOIN usuarios u ON f.usuario_agendamento_id = u.id
+                   LEFT JOIN usuarios uc ON f.usuario_id = uc.id
+                   WHERE 1=1";
         
         // Aplicar filtros
         if (!empty($filtros['medico_id'])) {
@@ -294,14 +296,14 @@ class FilaEspera {
                    agendado, data_agendamento, horario_agendamento, telefone1, telefone2, agendado_por,
                    urgente, motivo_urgencia, tipo_atendimento,
                    guia_autorizada, data_autorizacao_guia, observacao_guia,
-                   usuario_agendamento_id, data_hora_agendamento) 
+                   usuario_id, usuario_agendamento_id, data_hora_agendamento) 
                   VALUES 
                   (:medico_id, :especialidade_id, :convenio_id, :nome_paciente, :cpf, 
                    :data_nascimento, :data_solicitacao, :informacao, :observacao, 
                    :agendado, :data_agendamento, :horario_agendamento, :telefone1, :telefone2, :agendado_por,
                    :urgente, :motivo_urgencia, :tipo_atendimento,
-                   :guia_autorizada, :data_autorizacao_guia, :observacao_guia,
-                   :usuario_agendamento_id, :data_hora_agendamento)";
+                   :guia_autorizada, :data_autor_guia, :obs_guia,
+                   :usuario_id, :usuario_agend_id, :data_hora_agend) ";
         
         $stmt = $this->conn->prepare($query);
         
@@ -324,10 +326,11 @@ class FilaEspera {
         $stmt->bindParam(':motivo_urgencia', $dados['motivo_urgencia']);
         $stmt->bindParam(':tipo_atendimento', $dados['tipo_atendimento']);
         $stmt->bindParam(':guia_autorizada', $dados['guia_autorizada'], PDO::PARAM_INT);
-        $stmt->bindParam(':data_autorizacao_guia', $dados['data_autorizacao_guia']);
-        $stmt->bindParam(':observacao_guia', $dados['observacao_guia']);
-        $stmt->bindParam(':usuario_agendamento_id', $dados['usuario_agendamento_id'], PDO::PARAM_INT);
-        $stmt->bindParam(':data_hora_agendamento', $dados['data_hora_agendamento']);
+        $stmt->bindParam(':data_autor_guia', $dados['data_autorizacao_guia']);
+        $stmt->bindParam(':obs_guia', $dados['observacao_guia']);
+        $stmt->bindParam(':usuario_id', $dados['usuario_id']);
+        $stmt->bindParam(':usuario_agend_id', $dados['usuario_agendamento_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':data_hora_agend', $dados['data_hora_agendamento']);
         
         if ($stmt->execute()) {
             return $this->conn->lastInsertId();
